@@ -7,24 +7,6 @@ open System.Buffers
 
 let port = 3000
 let address = "127.0.0.1"
-
-//let mutable efSent = false
-//let TcpPack (b: byte[]) =
-//    let len = (byte) ((float)b.Length / 4.0)
-//    seq {
-//        if (efSent |> not)
-//        then
-//            efSent <- true
-//            yield 239uy
-//        if len > 127uy
-//        then
-//            yield 127uy
-//            yield len
-//        else
-//            yield len
-//        yield! b
-//    }
-
 let hexStringToByteArray (hex : string) =
     [| 0 .. hex.Length-1 |]
     |> Array.filter (fun x -> x % 2 = 0)
