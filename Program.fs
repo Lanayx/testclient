@@ -13,7 +13,7 @@ let address = "127.0.0.1"
 
 let rand = Random()
 let timestamp() =
-    (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds |> int64;
+    (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds
 
 let doWork() =
     printfn "Starting..."
@@ -21,12 +21,12 @@ let doWork() =
     let endpoint = IPEndPoint(IPAddress.Parse(address), port)
     let nonceBuffer = Array.zeroCreate<byte>(16);
     rand.NextBytes(nonceBuffer)
-    let timestamp = timestamp()
+    let msgId = timestamp() * (2.0 ** 32.0) |> int64
     let data =
-        MTProto.encode { AuthId = 0L; MsgId = timestamp; Bytes = nonceBuffer }
+        MTProto.encode { AuthId = 0L; MsgId = msgId; Bytes = nonceBuffer }
     let test =
         MTProto.decode data
-    printfn "Encode decode success=%b" (test.MsgId = timestamp)
+    printfn "Encode decode success=%b" (test.MsgId = msgId)
     printfn "Sending data [%s]" (BitConverter.ToString(data))
     task {
         try
